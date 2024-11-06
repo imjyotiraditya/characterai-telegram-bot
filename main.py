@@ -4,11 +4,11 @@ from config import CONFIG
 from handlers import base, chatting, search
 from handlers.callbacks import char_menu_callback
 from utils.commands import set_commands
-from characterai import PyAsyncCAI
+from characterai import aiocai
 
 
 bot = Bot(token=CONFIG.bot_token.get_secret_value())
-client = PyAsyncCAI(token=CONFIG.characterai_token.get_secret_value())
+client = aiocai.Client(CONFIG.characterai_token.get_secret_value())
 
 
 async def main():
@@ -20,7 +20,7 @@ async def main():
                        char_menu_callback.router,
                        )
 
-    await client.start()
+    await client.connect()
     await set_commands(bot)
     await dp.start_polling(bot)
 
